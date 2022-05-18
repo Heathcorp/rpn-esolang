@@ -50,6 +50,46 @@ def handle_instruction(stack: list, line: str):
 		stack.pop()
 		stack.append(value1 / value2)
 
+	elif re.search('^=$', line):
+		# equality
+		value1 = stack[len(stack) - 2]
+		value2 = stack[len(stack) - 1]
+		stack.pop()
+		stack.pop()
+		stack.append(value1 == value2)
+
+	elif re.search('^>$', line):
+		# more than
+		value1 = stack[len(stack) - 2]
+		value2 = stack[len(stack) - 1]
+		stack.pop()
+		stack.pop()
+		stack.append(value1 > value2)
+
+	elif re.search('^<$', line):
+		# less than
+		value1 = stack[len(stack) - 2]
+		value2 = stack[len(stack) - 1]
+		stack.pop()
+		stack.pop()
+		stack.append(value1 < value2)
+
+	elif re.search('^>=$', line):
+		# more than or equal
+		value1 = stack[len(stack) - 2]
+		value2 = stack[len(stack) - 1]
+		stack.pop()
+		stack.pop()
+		stack.append(value1 >= value2)
+
+	elif re.search('^<=$', line):
+		# less than or equal
+		value1 = stack[len(stack) - 2]
+		value2 = stack[len(stack) - 1]
+		stack.pop()
+		stack.pop()
+		stack.append(value1 <= value2)
+
 
 if __name__ == '__main__':
 	if len(sys.argv) != 2:
