@@ -14,5 +14,10 @@ Each line of a source file contains one element, they can be any of the followin
 - \- : subtraction operation
 - \* : multiplication operation
 - / : division operation
+- = : equality
+- < : less than
+- > : more than
+- <= : less than or equal
+- >= : more than or equal
 
 It is currently undefined what happens when trying to use mathematical operations on strings, details on this will be worked on and refined as I develop this further.
