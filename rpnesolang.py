@@ -4,9 +4,15 @@
 import sys
 import re
 
+from matplotlib import offsetbox
+
 def handle_instruction(stack: list, line: str):
 	
-	if re.search('^-?[0-9]+$', line):
+	if re.search('^#.*$', line):
+		# comment, ignore
+		pass
+
+	elif re.search('^-?[0-9]+$', line):
 		# integer, push to stack
 		stack.append(int(line))
 
@@ -89,6 +95,13 @@ def handle_instruction(stack: list, line: str):
 		stack.pop()
 		stack.pop()
 		stack.append(value1 <= value2)
+
+	# everything is highly experimental, but this one especially
+	elif re.search('^\[[0-9]+\]$', line):
+		# copy nth stack element (from the top down)
+		offset = int(line[1:len(line) - 2])
+		value = stack[len(stack) - 1 - offset]
+		stack.append(value)
 
 
 if __name__ == '__main__':
