@@ -5,6 +5,7 @@ A prototype esoteric programming language based on Reverse Polish Notation.
 This is a prototype subject to change, I do not know whether it is turing complete.
 
 ## Language details:
+NOTE: EVERYTHING IS HIGHLY EXPERIMENTAL AND WILL AMOST CERTAINLY BE CHANGED
 
 Each line of a source file contains one element, they can be any of the following:
 
