@@ -15,4 +15,4 @@ Each line of a source file contains one element, they can be any of the followin
 - \* : multiplication operation
 - / : division operation
 
-It is currently undefined what happens when trying to use mathematical operaions on strings, details on this will be worked on and refined as I develop this further.
+It is currently undefined what happens when trying to use mathematical operations on strings, details on this will be worked on and refined as I develop this further.
