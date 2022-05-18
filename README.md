@@ -1,4 +1,5 @@
 # rpn-esolang
+(working title)
 A prototype esoteric programming language based on Reverse Polish Notation.
 
 This is a prototype subject to change, I do not know whether it is turing complete.
@@ -9,8 +10,8 @@ Each line of a source file contains one element, they can be any of the followin
 
 - Number : real number represented in base 10
 - String : any string notated using single or double quotes
-- + : addition operation
-- - : subtraction operation
+- \+ : addition operation
+- \- : subtraction operation
 - \* : multiplication operation
 - / : division operation
 
