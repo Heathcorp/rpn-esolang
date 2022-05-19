@@ -125,6 +125,6 @@ if __name__ == '__main__':
 
 		while line:
 			handle_instruction(stack, line)
-			print(stack)
+			# print(stack)
 
 			line = file.readline()
