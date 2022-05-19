@@ -8,15 +8,15 @@ from matplotlib import offsetbox
 
 def handle_instruction(stack: list, line: str):
 	
-	if re.search('^#.*$', line):
-		# comment, ignore
+	if re.search('^(#.*)?$', line):
+		# comment or empty line, ignore
 		pass
 
 	elif re.search('^-?[0-9]+$', line):
 		# integer, push to stack
 		stack.append(int(line))
 
-	elif re.search('^-?[0-9]+(\.?[0-9]+)?$', line):
+	elif re.search('^-?[0-9]+\.?[0-9]+$', line):
 		# floating point number, push to stack
 		stack.append(float(line))
 
@@ -96,12 +96,18 @@ def handle_instruction(stack: list, line: str):
 		stack.pop()
 		stack.append(value1 <= value2)
 
-	# everything is highly experimental, but this one especially
+	# everything is highly experimental, but the following instructions especially
 	elif re.search('^\[[0-9]+\]$', line):
 		# copy nth stack element (from the top down)
 		offset = int(line[1:len(line) - 2])
 		value = stack[len(stack) - 1 - offset]
 		stack.append(value)
+
+	elif re.search('^<<$', line):
+		# print and pop the element at the top of the stack
+		value = stack[len(stack) - 1]
+		stack.pop()
+		print(value)
 
 
 if __name__ == '__main__':
