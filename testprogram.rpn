@@ -1,23 +1,21 @@
 # adding language features until it's possible to make fizz buzz
 
-0
-{
-69
-}
+# for (i = 1; i < 100; i++): print(i)
+100
+1
 
-
-# i = 99
-99
-
-# somehow need to loop here
-
-# print i
 [0]
 {
+# print(i)
 [0]
 <<
+
+# i++
 1
--
-[0]
++
+
+# if (not i <= 100): break
+[1]
+[1]
+>=
 }
-# JMP
