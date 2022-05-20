@@ -34,7 +34,9 @@ def handle_instruction(line: str):
 
 	elif re.search('^\'.*\'$', line) and not skipLoop:
 		# string, parse and push to stack
-		stack.append(str(line[1:len(line) - 2]))
+		text = str(line[1:len(line) - 2])
+		text = text.replace('\\n', '\n')
+		stack.append(text)
 
 	elif re.search('^\+$', line) and not skipLoop:
 		# addition
@@ -90,6 +92,12 @@ def handle_instruction(line: str):
 		value1 = stack.pop()
 		stack.append(value1 <= value2)
 
+	elif re.search('^%$', line) and not skipLoop:
+		# modulo
+		value2 = stack.pop()
+		value1 = stack.pop()
+		stack.append(value1 % value2)
+
 	# everything is highly experimental, but the following instructions especially
 	elif re.search('^\[[0-9]+\]$', line) and not skipLoop:
 		# copy nth stack element (from the top down)
@@ -100,7 +108,7 @@ def handle_instruction(line: str):
 	elif re.search('^<<$', line) and not skipLoop:
 		# print and pop the element at the top of the stack
 		value = stack.pop()
-		print(value)
+		print(value, end='')
 
 	elif re.search('^{$', line):
 		# pops top of stack, if it was 0 then skip to the closing brace
