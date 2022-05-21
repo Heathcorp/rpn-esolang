@@ -23,6 +23,7 @@ Each line of a source file contains one element, they can be any of the followin
 - \>= : more than or equal
 - [offset] : copy the element at the stack offset
 - << : print the head element and pop
+- \>\> : get a line from input, parse it as a number then push onto the stack
 - { : start a loop if the popped head element is not 0
 - } : jump to the start of the loop if the popped head element is not 0
 

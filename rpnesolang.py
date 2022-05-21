@@ -28,7 +28,7 @@ def handle_instruction(line: str):
 		# integer, push to stack
 		stack.append(int(line))
 
-	elif re.search('^-?[0-9]+\.?[0-9]+$', line) and not skipLoop:
+	elif re.search('^-?[0-9]+\.[0-9]+$', line) and not skipLoop:
 		# floating point number, push to stack
 		stack.append(float(line))
 
@@ -110,6 +110,19 @@ def handle_instruction(line: str):
 		value = stack.pop()
 		print(value, end='')
 
+	elif re.search('^>>$', line) and not skipLoop:
+		# get an input line and place at the top of stack
+		# parse it as a number if it looks like one
+		text = input()
+		value = text
+		if re.search('^-?[0-9]+$', text):
+			# integer
+			value = int(text)
+		elif re.search('^-?[0-9]+\.[0-9]+'):
+			# float
+			value = float(text)
+		stack.append(value)
+
 	elif re.search('^{$', line):
 		# pops top of stack, if it was 0 then skip to the closing brace
 		loops.append(pc)
@@ -118,8 +131,6 @@ def handle_instruction(line: str):
 			if value == 0:
 				skipLoop = True
 				loopToSkip = pc
-			
-				
 
 	elif re.search('^}$', line):
 		# pops top of stack, if it was not 0 then go back to the opening brace
