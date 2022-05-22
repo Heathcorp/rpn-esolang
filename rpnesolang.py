@@ -4,8 +4,6 @@
 import sys
 import re
 
-from matplotlib import offsetbox
-
 # main stack memory
 stack = []
 # program memory
@@ -15,102 +13,109 @@ lines = []
 loops = []
 skipLoop = False
 loopToSkip = -1
+# labels and their pcs
+labels = {}
+# function call stack: list[programCounter]
+calls = []
+skipFunctionDef = False
 
 def handle_instruction(line: str):
 	global skipLoop
 	global pc
 	global loopToSkip
-	if re.search('^(#.*)?$', line) and not skipLoop:
+	global skipFunctionDef
+
+	if re.search('^(#.*)?$', line) and not (skipLoop or skipFunctionDef):
 		# comment or empty line, ignore
 		return False
 
-	elif re.search('^-?[0-9]+$', line) and not skipLoop:
+	elif re.search('^-?[0-9]+$', line) and not (skipLoop or skipFunctionDef):
 		# integer, push to stack
 		stack.append(int(line))
 
-	elif re.search('^-?[0-9]+\.[0-9]+$', line) and not skipLoop:
+	elif re.search('^-?[0-9]+\.[0-9]+$', line) and not (skipLoop or skipFunctionDef):
 		# floating point number, push to stack
 		stack.append(float(line))
 
-	elif re.search('^\'.*\'$', line) and not skipLoop:
+	elif re.search('^\'.*\'$', line) and not (skipLoop or skipFunctionDef):
 		# string, parse and push to stack
 		text = str(line[1:len(line) - 2])
 		text = text.replace('\\n', '\n')
 		stack.append(text)
 
-	elif re.search('^\+$', line) and not skipLoop:
+	elif re.search('^\+$', line) and not (skipLoop or skipFunctionDef):
 		# addition
 		value2 = stack.pop()
 		value1 = stack.pop()
 		stack.append(value1 + value2)
 
-	elif re.search('^\-$', line) and not skipLoop:
+	elif re.search('^\-$', line) and not (skipLoop or skipFunctionDef):
 		# subtraction
 		value2 = stack.pop()
 		value1 = stack.pop()
 		stack.append(value1 - value2)
 
-	elif re.search('^\*$', line) and not skipLoop:
+	elif re.search('^\*$', line) and not (skipLoop or skipFunctionDef):
 		# multiplication
 		value2 = stack.pop()
 		value1 = stack.pop()
 		stack.append(value1 * value2)
 
-	elif re.search('^\/$', line) and not skipLoop:
+	elif re.search('^\/$', line) and not (skipLoop or skipFunctionDef):
 		# division
 		value2 = stack.pop()
 		value1 = stack.pop()
 		stack.append(value1 / value2)
 
-	elif re.search('^=$', line) and not skipLoop:
+	elif re.search('^=$', line) and not (skipLoop or skipFunctionDef):
 		# equality
 		value2 = stack.pop()
 		value1 = stack.pop()
 		stack.append(value1 == value2)
 
-	elif re.search('^>$', line) and not skipLoop:
+	elif re.search('^>$', line) and not (skipLoop or skipFunctionDef):
 		# more than
 		value2 = stack.pop()
 		value1 = stack.pop()
 		stack.append(value1 > value2)
 
-	elif re.search('^<$', line) and not skipLoop:
+	elif re.search('^<$', line) and not (skipLoop or skipFunctionDef):
 		# less than
 		value2 = stack.pop()
 		value1 = stack.pop()
 		stack.append(value1 < value2)
 
-	elif re.search('^>=$', line) and not skipLoop:
+	elif re.search('^>=$', line) and not (skipLoop or skipFunctionDef):
 		# more than or equal
 		value2 = stack.pop()
 		value1 = stack.pop()
 		stack.append(value1 >= value2)
 
-	elif re.search('^<=$', line) and not skipLoop:
+	elif re.search('^<=$', line) and not (skipLoop or skipFunctionDef):
 		# less than or equal
 		value2 = stack.pop()
 		value1 = stack.pop()
 		stack.append(value1 <= value2)
 
-	elif re.search('^%$', line) and not skipLoop:
+	elif re.search('^%$', line) and not (skipLoop or skipFunctionDef):
 		# modulo
 		value2 = stack.pop()
 		value1 = stack.pop()
 		stack.append(value1 % value2)
 
 	# everything is highly experimental, but the following instructions especially
-	elif re.search('^\[[0-9]+\]$', line) and not skipLoop:
+	elif re.search('^\[[0-9]+\]$', line) and not (skipLoop or skipFunctionDef):
 		# copy nth stack element (from the top down)
 		offset = int(line[1:len(line) - 2])
 		value = stack[len(stack) - 1 - offset]
 		stack.append(value)
 
-	elif re.search('^<<$', line) and not skipLoop:
+	elif re.search('^<<$', line) and not (skipLoop or skipFunctionDef):
 		# print and pop the element at the top of the stack
 		value = stack.pop()
 		print(value, end='')
 
-	elif re.search('^>>$', line) and not skipLoop:
+	elif re.search('^>>$', line) and not (skipLoop or skipFunctionDef):
 		# get an input line and place at the top of stack
 		# parse it as a number if it looks like one
 		text = input()
@@ -123,7 +128,7 @@ def handle_instruction(line: str):
 			value = float(text)
 		stack.append(value)
 
-	elif re.search('^{$', line):
+	elif re.search('^{$', line) and not skipFunctionDef:
 		# pops top of stack, if it was 0 then skip to the closing brace
 		loops.append(pc)
 		if not skipLoop:
@@ -132,7 +137,7 @@ def handle_instruction(line: str):
 				skipLoop = True
 				loopToSkip = pc
 
-	elif re.search('^}$', line):
+	elif re.search('^}$', line) and not skipFunctionDef:
 		# pops top of stack, if it was not 0 then go back to the opening brace
 		loopStart = loops.pop()
 		if not skipLoop:
@@ -145,6 +150,23 @@ def handle_instruction(line: str):
 			# reached the end of the skip
 			loopToSkip = -1
 			skipLoop = False
+
+	elif re.search('^\w+:$', line) and not (skipLoop or skipFunctionDef):
+		# goto label definition for functions
+		label = line[:-1]
+		labels[label] = pc
+		skipFunctionDef = True
+			
+	elif re.search('^call \w+$', line) and not (skipLoop or skipFunctionDef):
+		# call the function
+		label = line[5:]
+		calls.append(pc)
+
+	elif re.search('^return$', line) and not skipLoop:
+		# return
+		pc = calls.pop()
+		if skipFunctionDef:
+			skipFunctionDef = False
 
 	return True
 
