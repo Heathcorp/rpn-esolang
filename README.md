@@ -26,5 +26,8 @@ Each line of a source file contains one element, they can be any of the followin
 - \>\> : get a line from input, parse it as a number then push onto the stack
 - { : start a loop if the popped head element is not 0
 - } : jump to the start of the loop if the popped head element is not 0
+- \<label\>: : define a function block
+- return : end a function block definition
+- call \<label\> : call a function, returning to this position once return is reached
 
 It is currently undefined what happens when trying to use mathematical operations on strings, details on this will be worked on and refined as I develop this further.

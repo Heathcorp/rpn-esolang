@@ -39,7 +39,7 @@ def handle_instruction(line: str):
 
 	elif re.search('^\'.*\'$', line) and not (skipLoop or skipFunctionDef):
 		# string, parse and push to stack
-		text = str(line[1:len(line) - 2])
+		text = str(line[1:len(line) - 1])
 		text = text.replace('\\n', '\n')
 		stack.append(text)
 
@@ -106,7 +106,7 @@ def handle_instruction(line: str):
 	# everything is highly experimental, but the following instructions especially
 	elif re.search('^\[[0-9]+\]$', line) and not (skipLoop or skipFunctionDef):
 		# copy nth stack element (from the top down)
-		offset = int(line[1:len(line) - 2])
+		offset = int(line[1:len(line) - 1])
 		value = stack[len(stack) - 1 - offset]
 		stack.append(value)
 
@@ -156,17 +156,19 @@ def handle_instruction(line: str):
 		label = line[:-1]
 		labels[label] = pc
 		skipFunctionDef = True
-			
+
 	elif re.search('^call \w+$', line) and not (skipLoop or skipFunctionDef):
 		# call the function
 		label = line[5:]
 		calls.append(pc)
+		pc = labels[label]
 
 	elif re.search('^return$', line) and not skipLoop:
 		# return
-		pc = calls.pop()
 		if skipFunctionDef:
 			skipFunctionDef = False
+		else:
+			pc = calls.pop()
 
 	return True
 
@@ -179,12 +181,12 @@ if __name__ == '__main__':
 	filename = sys.argv[1]
 
 	with open(filename, 'r') as file:
-		line = file.readline()
+		rawlines = file.read().splitlines()
 
-		while line:
+		for line in rawlines:
 			lines.append(line)
 			line = file.readline()
 
 		while pc < len(lines):
-			if handle_instruction(lines[pc]): pass #print(stack, loops, skipLoop, pc)
+			if handle_instruction(lines[pc]): pass #print(pc, calls, stack, loops, skipLoop, skipFunctionDef)
 			pc += 1
