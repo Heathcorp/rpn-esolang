@@ -1,6 +1,8 @@
-# enter a number of fibonacci digits
 -1
 1
+# enter the number of fibonacci numbers to output
+'Enter a number:\n'
+<<
 >>
 [0]
 {

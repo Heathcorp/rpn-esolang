@@ -7,7 +7,9 @@ return
 # fizz buzz
 
 # for (i = 1; i < 100; i++): print(i)
-100
+'Enter a number:\n'
+<<
+>>
 1
 
 [0]
@@ -15,7 +17,7 @@ return
 # print fizz, buzz, fizzbuzz or number
 [0]
 3
-divisible
+call divisible
 {
 'fizz'
 <<
@@ -24,7 +26,7 @@ divisible
 
 [0]
 5
-divisible
+call divisible
 {
 'buzz'
 <<
@@ -33,10 +35,10 @@ divisible
 
 [0]
 5
-divisible
+%
 [1]
 3
-divisible
+%
 *
 {
 [0]
