@@ -1,0 +1,22 @@
+# enter a number of fibonacci digits
+-1
+1
+>>
+[0]
+{
+# basically have to copy the whole stack in order to iterate and retain memory
+[1]
+[3]
+[1]
++
+[0]
+<<
+'\n'
+<<
+
+# i--
+[2]
+1
+-
+[0]
+}
