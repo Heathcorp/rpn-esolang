@@ -1,0 +1,48 @@
+'a = '
+<<
+>>
+'b = '
+<<
+>>
+
+# make b the smallest
+1
+*
+1
+*
+<
+[
+0
+*
+2
+*
+0
+]
+
+# total = 0
+0
+1
+*
+[
+# add a to total
+2
+*
++
+# copy the stack
+2
+*
+2
+*
+# decrement b
+1
+-
+2
+*
+1
+*
+]
+'a * b = '
+<<
+<<
+'\n'
+<<
