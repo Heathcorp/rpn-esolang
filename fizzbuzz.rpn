@@ -12,39 +12,45 @@ return
 >>
 1
 
-[0]
-{
+0
+copy
+[
 # print fizz, buzz, fizzbuzz or number
-[0]
+0
+copy
 3
 call divisible
-{
+[
 'fizz'
 <<
 0
-}
+]
 
-[0]
+0
+copy
 5
 call divisible
-{
+[
 'buzz'
 <<
 0
-}
+]
 
-[0]
+0
+copy
 5
 %
-[1]
+1
+copy
 3
 %
 *
-{
-[0]
+[
+0
+copy
 <<
 0
-}
+]
 
 '\n'
 <<
@@ -54,7 +60,9 @@ call divisible
 +
 
 # if (not i <= 100): break
-[1]
-[1]
+1
+copy
+1
+copy
 >=
-}
+]

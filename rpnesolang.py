@@ -104,9 +104,9 @@ def handle_instruction(line: str):
 		stack.append(value1 % value2)
 
 	# everything is highly experimental, but the following instructions especially
-	elif re.search('^\[[0-9]+\]$', line) and not (skipLoop or skipFunctionDef):
+	elif re.search('^copy$', line) and not (skipLoop or skipFunctionDef):
 		# copy nth stack element (from the top down)
-		offset = int(line[1:len(line) - 1])
+		offset = stack.pop()
 		value = stack[len(stack) - 1 - offset]
 		stack.append(value)
 
@@ -128,7 +128,7 @@ def handle_instruction(line: str):
 			value = float(text)
 		stack.append(value)
 
-	elif re.search('^{$', line) and not skipFunctionDef:
+	elif re.search('^\[$', line) and not skipFunctionDef:
 		# pops top of stack, if it was 0 then skip to the closing brace
 		loops.append(pc)
 		if not skipLoop:
@@ -137,7 +137,7 @@ def handle_instruction(line: str):
 				skipLoop = True
 				loopToSkip = pc
 
-	elif re.search('^}$', line) and not skipFunctionDef:
+	elif re.search('^\]$', line) and not skipFunctionDef:
 		# pops top of stack, if it was not 0 then go back to the opening brace
 		loopStart = loops.pop()
 		if not skipLoop:

@@ -21,11 +21,11 @@ Each line of a source file contains one element, they can be any of the followin
 - \> : more than
 - <= : less than or equal
 - \>= : more than or equal
-- [offset] : copy the element at the stack offset
+- copy : pop the stack and copy the element at that stack offset
 - << : print the head element and pop
 - \>\> : get a line from input, parse it as a number then push onto the stack
-- { : start a loop if the popped head element is not 0
-- } : jump to the start of the loop if the popped head element is not 0
+- [ : start a loop if the popped head element is not 0
+- ] : jump to the start of the loop if the popped head element is not 0
 - \<label\>: : define a function block
 - return : end a function block definition
 - call \<label\> : call a function, returning to this position once return is reached
