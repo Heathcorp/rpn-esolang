@@ -99,7 +99,7 @@ def handle_instruction(line: str):
 
 	# everything is highly experimental, but the following instructions especially
 	elif re.search('^\*$', line) and not (skipLoop or skipFunctionDef):
-		# copy nth stack element (from the top down)
+		# dereference top element, (from the top down)
 		offset = stack.pop()
 		value = stack[len(stack) - 1 - offset]
 		stack.append(value)
