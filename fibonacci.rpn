@@ -5,27 +5,27 @@
 <<
 >>
 0
-copy
+*
 [
 # basically have to copy the whole stack in order to iterate and retain memory
 1
-copy
+*
 3
-copy
+*
 1
-copy
+*
 +
 0
-copy
+*
 <<
 '\n'
 <<
 
 # i--
 2
-copy
+*
 1
 -
 0
-copy
+*
 ]

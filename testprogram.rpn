@@ -10,11 +10,11 @@ return
 1
 
 0
-copy
+*
 [
 # print(i)
 0
-copy
+*
 <<
 call newline
 
@@ -24,8 +24,8 @@ call newline
 
 # if (not i <= 100): break
 1
-copy
+*
 1
-copy
+*
 >=
 ]

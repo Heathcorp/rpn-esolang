@@ -13,11 +13,11 @@ return
 1
 
 0
-copy
+*
 [
 # print fizz, buzz, fizzbuzz or number
 0
-copy
+*
 3
 call divisible
 [
@@ -27,7 +27,7 @@ call divisible
 ]
 
 0
-copy
+*
 5
 call divisible
 [
@@ -37,17 +37,17 @@ call divisible
 ]
 
 0
-copy
+*
 5
 %
 1
-copy
+*
 3
 %
 *
 [
 0
-copy
+*
 <<
 0
 ]
@@ -61,8 +61,8 @@ copy
 
 # if (not i <= 100): break
 1
-copy
+*
 1
-copy
+*
 >=
 ]

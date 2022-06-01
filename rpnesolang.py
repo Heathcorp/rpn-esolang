@@ -55,12 +55,6 @@ def handle_instruction(line: str):
 		value1 = stack.pop()
 		stack.append(value1 - value2)
 
-	elif re.search('^\*$', line) and not (skipLoop or skipFunctionDef):
-		# multiplication
-		value2 = stack.pop()
-		value1 = stack.pop()
-		stack.append(value1 * value2)
-
 	elif re.search('^\/$', line) and not (skipLoop or skipFunctionDef):
 		# division
 		value2 = stack.pop()
@@ -104,7 +98,7 @@ def handle_instruction(line: str):
 		stack.append(value1 % value2)
 
 	# everything is highly experimental, but the following instructions especially
-	elif re.search('^copy$', line) and not (skipLoop or skipFunctionDef):
+	elif re.search('^\*$', line) and not (skipLoop or skipFunctionDef):
 		# copy nth stack element (from the top down)
 		offset = stack.pop()
 		value = stack[len(stack) - 1 - offset]
