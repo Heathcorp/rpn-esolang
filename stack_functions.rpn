@@ -1,0 +1,20 @@
+pop2:
+# pops the second element
+1
+*
+-
++
+return
+
+popN:
+# pop the stack N times
+0
+*
+[
+1
+-
+call pop2
+0
+*
+]
+return
