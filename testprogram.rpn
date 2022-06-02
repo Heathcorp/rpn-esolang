@@ -16,7 +16,7 @@ return
 0
 *
 <<
-call newline
+newline
 
 # i++
 1

@@ -151,9 +151,9 @@ def handle_instruction(line: str):
 		labels[label] = pc
 		skipFunctionDef = True
 
-	elif re.search('^call \w+$', line) and not (skipLoop or skipFunctionDef):
+	elif re.search('^\w+$', line) and not (skipLoop or skipFunctionDef):
 		# call the function
-		label = line[5:]
+		label = line
 		calls.append(pc)
 		pc = labels[label]
 

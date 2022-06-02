@@ -19,7 +19,7 @@ return
 0
 *
 3
-call divisible
+divisible
 [
 'fizz'
 <<
@@ -29,7 +29,7 @@ call divisible
 0
 *
 5
-call divisible
+divisible
 [
 'buzz'
 <<

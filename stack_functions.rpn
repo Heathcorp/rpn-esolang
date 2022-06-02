@@ -1,3 +1,10 @@
+pop:
+# pop the top stack element
+0
+*
+-
+return
+
 pop2:
 # pops the second element
 1
@@ -13,7 +20,7 @@ popN:
 [
 1
 -
-call pop2
+pop2
 0
 *
 ]
