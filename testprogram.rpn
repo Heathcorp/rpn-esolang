@@ -1,12 +1,12 @@
 newline:
 '\n'
-<<
+.
 return
 
 # for (i = 1; i < <inputted number>; i++): print(i)
 'Enter a number:\n'
-<<
->>
+.
+,
 1
 
 0
@@ -15,7 +15,7 @@ return
 # print(i)
 0
 *
-<<
+.
 newline
 
 # i++

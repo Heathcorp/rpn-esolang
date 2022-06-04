@@ -2,8 +2,8 @@
 1
 # enter the number of fibonacci numbers to output
 'Enter a number:\n'
-<<
->>
+.
+,
 0
 *
 [
@@ -17,9 +17,9 @@
 +
 0
 *
-<<
+.
 '\n'
-<<
+.
 
 # i--
 2

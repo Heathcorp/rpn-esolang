@@ -8,8 +8,8 @@ return
 
 # for (i = 1; i < 100; i++): print(i)
 'Enter a number:\n'
-<<
->>
+.
+,
 1
 
 0
@@ -22,7 +22,7 @@ return
 divisible
 [
 'fizz'
-<<
+.
 0
 ]
 
@@ -32,7 +32,7 @@ divisible
 divisible
 [
 'buzz'
-<<
+.
 0
 ]
 
@@ -48,12 +48,12 @@ divisible
 [
 0
 *
-<<
+.
 0
 ]
 
 '\n'
-<<
+.
 
 # i++
 1

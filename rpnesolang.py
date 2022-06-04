@@ -104,12 +104,12 @@ def handle_instruction(line: str):
 		value = stack[len(stack) - 1 - offset]
 		stack.append(value)
 
-	elif re.search('^<<$', line) and not (skipLoop or skipFunctionDef):
+	elif re.search('^\.$', line) and not (skipLoop or skipFunctionDef):
 		# print and pop the element at the top of the stack
 		value = stack.pop()
 		print(value, end='')
 
-	elif re.search('^>>$', line) and not (skipLoop or skipFunctionDef):
+	elif re.search('^,$', line) and not (skipLoop or skipFunctionDef):
 		# get an input line and place at the top of stack
 		# parse it as a number if it looks like one
 		text = input()
