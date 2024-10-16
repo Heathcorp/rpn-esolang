@@ -25,6 +25,8 @@ def handle_instruction(line: str):
 	global loopToSkip
 	global skipFunctionDef
 
+	# print([*line], re.search('^return$', line))
+
 	if re.search('^(#.*)?$', line) and not (skipLoop or skipFunctionDef):
 		# comment or empty line, ignore
 		return False
@@ -33,7 +35,7 @@ def handle_instruction(line: str):
 		# integer, push to stack
 		stack.append(int(line))
 
-	elif re.search('^-?[0-9]+\.[0-9]+$', line) and not (skipLoop or skipFunctionDef):
+	elif re.search('^-?[0-9]+\\.[0-9]+$', line) and not (skipLoop or skipFunctionDef):
 		# floating point number, push to stack
 		stack.append(float(line))
 
@@ -43,19 +45,19 @@ def handle_instruction(line: str):
 		text = text.replace('\\n', '\n')
 		stack.append(text)
 
-	elif re.search('^\+$', line) and not (skipLoop or skipFunctionDef):
+	elif re.search('^\\+$', line) and not (skipLoop or skipFunctionDef):
 		# addition
 		value2 = stack.pop()
 		value1 = stack.pop()
 		stack.append(value1 + value2)
 
-	elif re.search('^\-$', line) and not (skipLoop or skipFunctionDef):
+	elif re.search('^\\-$', line) and not (skipLoop or skipFunctionDef):
 		# subtraction
 		value2 = stack.pop()
 		value1 = stack.pop()
 		stack.append(value1 - value2)
 
-	elif re.search('^\/$', line) and not (skipLoop or skipFunctionDef):
+	elif re.search('^\\/$', line) and not (skipLoop or skipFunctionDef):
 		# division
 		value2 = stack.pop()
 		value1 = stack.pop()
@@ -98,13 +100,13 @@ def handle_instruction(line: str):
 		stack.append(value1 % value2)
 
 	# everything is highly experimental, but the following instructions especially
-	elif re.search('^\*$', line) and not (skipLoop or skipFunctionDef):
+	elif re.search('^\\*$', line) and not (skipLoop or skipFunctionDef):
 		# dereference top element, (from the top down)
 		offset = stack.pop()
 		value = stack[len(stack) - 1 - offset]
 		stack.append(value)
 
-	elif re.search('^\.$', line) and not (skipLoop or skipFunctionDef):
+	elif re.search('^\\.$', line) and not (skipLoop or skipFunctionDef):
 		# print and pop the element at the top of the stack
 		value = stack.pop()
 		print(value, end='')
@@ -117,12 +119,12 @@ def handle_instruction(line: str):
 		if re.search('^-?[0-9]+$', text):
 			# integer
 			value = int(text)
-		elif re.search('^-?[0-9]+\.[0-9]+'):
+		elif re.search('^-?[0-9]+\\.[0-9]+'):
 			# float
 			value = float(text)
 		stack.append(value)
 
-	elif re.search('^\[$', line) and not skipFunctionDef:
+	elif re.search('^\\[$', line) and not skipFunctionDef:
 		# pops top of stack, if it was 0 then skip to the closing brace
 		loops.append(pc)
 		if not skipLoop:
@@ -131,7 +133,7 @@ def handle_instruction(line: str):
 				skipLoop = True
 				loopToSkip = pc
 
-	elif re.search('^\]$', line) and not skipFunctionDef:
+	elif re.search('^\\]$', line) and not skipFunctionDef:
 		# pops top of stack, if it was not 0 then go back to the opening brace
 		loopStart = loops.pop()
 		if not skipLoop:
@@ -145,17 +147,11 @@ def handle_instruction(line: str):
 			loopToSkip = -1
 			skipLoop = False
 
-	elif re.search('^\w+:$', line) and not (skipLoop or skipFunctionDef):
+	elif re.search('^\\w+:$', line) and not (skipLoop or skipFunctionDef):
 		# goto label definition for functions
 		label = line[:-1]
 		labels[label] = pc
 		skipFunctionDef = True
-
-	elif re.search('^\w+$', line) and not (skipLoop or skipFunctionDef):
-		# call the function
-		label = line
-		calls.append(pc)
-		pc = labels[label]
 
 	elif re.search('^return$', line) and not skipLoop:
 		# return
@@ -163,6 +159,12 @@ def handle_instruction(line: str):
 			skipFunctionDef = False
 		else:
 			pc = calls.pop()
+
+	elif re.search('^\\w+$', line) and not (skipLoop or skipFunctionDef):
+		# call the function
+		label = line
+		calls.append(pc)
+		pc = labels[label]
 
 	return True
 
