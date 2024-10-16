@@ -25,7 +25,7 @@ def handle_instruction(line: str):
 	global loopToSkip
 	global skipFunctionDef
 
-	# print([*line], re.search('^return$', line))
+	# print(stack, line)
 
 	if re.search('^(#.*)?$', line) and not (skipLoop or skipFunctionDef):
 		# comment or empty line, ignore
@@ -92,6 +92,12 @@ def handle_instruction(line: str):
 		value2 = stack.pop()
 		value1 = stack.pop()
 		stack.append(value1 <= value2)
+
+	elif re.search('^and$', line) and not (skipLoop or skipFunctionDef):
+		# logical AND
+		value2 = stack.pop()
+		value1 = stack.pop()
+		stack.append(value1 and value2)
 
 	elif re.search('^%$', line) and not (skipLoop or skipFunctionDef):
 		# modulo
